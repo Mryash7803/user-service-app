@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Mryash7803/your-gitops-repo.git'
+    repoURL: 'https://github.com/Mryash7803/user-service-app.git'
     targetRevision: EAD
     path: helm/user-service
   destination:
