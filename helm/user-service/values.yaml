@@ -2,7 +2,7 @@ replicaCount: 2
 
 image: 
   repository: mryashdoc/user-service
-  tag: "dc4d22febcac301919dbc481a4b6cb040a93e736"
+  tag: "16e9dda82d6442cfc2a94869336916777c036fe4"
   pullPolicy: IfNotPresent
 
 
