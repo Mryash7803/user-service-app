@@ -44,7 +44,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           # Use sed to replace the old image tag with the new GitHub SHA
-          sed -i 's/tag: .*/tag: "${{ github.sha }}"/' helm/user-service/yaml
+          sed -i 's/tag: .*/tag: "${{ github.sha }}"/' helm/user-service/values.yaml
           git add helm/user-service/values.yaml
           git commit -m "Update image tag to ${{ github.sha }}"
           git push
