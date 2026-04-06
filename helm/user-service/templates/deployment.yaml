@@ -1,0 +1,26 @@
+apiversion: apps/v1
+kind: Deployment
+matadata: 
+  name: {{ .Release.Name }}-user-service
+  
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchlabels:  
+      app: user-service
+    template:
+      metadata:
+        labels:
+          app: user-service
+      spec:
+        containers:
+        - name: user-service
+          iamge: "{{ .Values.image.repository }}:"" .Values.image.tag }}"
+          ports: 
+            - containerPort:  3000
+          env:
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
+      
+
+

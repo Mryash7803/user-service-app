@@ -1,0 +1,17 @@
+replicaCount: 2
+
+image: 
+  repository: mryashdoc/user-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+
+service:
+  type: ClusterIP
+  port: 80
+ 
+
+database:
+  host: postgres-service
+  port: 5432
+

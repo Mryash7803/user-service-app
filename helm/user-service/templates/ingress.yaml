@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  spec:
+    rules:
+      - host: megaproject.local
+        http:
+          paths:
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-user-service
+                port:
+                  number: {{ .Values.service.port }}
+
