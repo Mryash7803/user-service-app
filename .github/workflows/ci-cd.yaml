@@ -1,0 +1,64 @@
+name: CI/CD Pipeline with Sonar & Docker
+
+on:
+  
+  push:
+    branches:
+      - main
+
+
+ jobs:
+   build-and-push:
+     runs-on: ubuntu-latest
+     steps:
+     - name: Checkout Code
+       uses: actions/checkout@v3
+
+       # 1. Sonarqube code Quality Check
+
+       - name: SonarCloud Scan
+         uses: SonarSource/sonarcloud-github-action@master
+         env: 
+           GITHUB_TOKEN: ${{ ssecrets>GITHUB_TOKEN }}
+           SONAR_TOKEN:  ${{ secrets.SONAR_TOKEN }}
+
+       # 2. Login to Docker Hub
+       
+       - name: Log in to Docker Hub
+         uses: docker/Login-action@v2
+         with:
+           username:  ${{ secrets.DOCKER_USERNAME }}
+           password:  ${{  secrets.DOCKER_PASSWORD }}
+
+       # 3. Build and Push Docker Image
+
+       - name: Build and Push
+         uses: docker/build-push-action@v4
+         with:
+           context: .
+           push: true
+           tags: ${{  secrets.DOCKER_USERNAME }}/user-service:${{ github.sha  }}
+
+       # 4.  update Helm Values (Gitops Trigger)
+
+       - name: Update Helm values in Gitops Repo  
+         run: |
+           git config user.name "GitHub Actions"
+           git config user.email "actions@github.com"
+           # Use sed to replace the old image tag with the new GitHub SHA
+           sed -i 's/tag: .*/tag: "${{ github.sha }}"/' helm/user-service/yaml
+           git add helm/user-service/values.yaml
+           git commit -m "Update image tag to ${{ github.sha }}"
+           git push
+
+
+
+
+
+        
+
+
+     
+
+
+
