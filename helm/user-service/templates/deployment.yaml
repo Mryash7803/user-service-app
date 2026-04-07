@@ -20,3 +20,8 @@ spec:
           env:
             - name: DB_HOST
               value: {{ .Values.database.host }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretkeyref:
+                  name: postgres-secret
+                  key:  postgres-password
